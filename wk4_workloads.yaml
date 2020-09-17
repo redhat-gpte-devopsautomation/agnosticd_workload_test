@@ -1,0 +1,69 @@
+
+# ---------------------------------------------------------
+# Bookbag Setup
+# ---------------------------------------------------------
+ocp4_workload_bookbag_setup_project: "bookbag"
+ocp4_workload_bookbag_setup_project_display: "Bookbag RHTR2020 OCP4 Pipelines"
+ocp4_workload_bookbag_setup_git_repo: https://github.com/redhat-gpte-labs/rhtr2020_pipelines.git
+ocp4_workload_bookbag_setup_git_version: master
+ocp4_workload_bookbag_setup_image_name: rhtr2020pipelines
+
+# ---------------------------------------------------------
+# Bookbag User
+# ---------------------------------------------------------
+ocp4_workload_bookbag_user_project: "bookbag-{{ guid }}"
+ocp4_workload_bookbag_user_project_display: "Bookbag for user {{ ocp_username }}"
+ocp4_workload_bookbag_user_deployment_name: bookbag
+ocp4_workload_bookbag_user_image_namespace: bookbag
+ocp4_workload_bookbag_user_image_name: "image-registry.openshift-image-registry.svc:5000/{{ ocp4_workload_bookbag_user_image_namespace }}/rhtr2020pipelines"
+ocp4_workload_bookbag_user_image_tag: latest
+ocp4_workload_bookbag_user_console_deploy: true
+#ocp4_workload_bookbag_user_console_image_override: quay.io/openshift/origin-console:4.5
+ocp4_workload_bookbag_user_console_branding: openshift
+ocp4_workload_bookbag_user_role: view
+ocp4_workload_bookbag_user_create_pvc: true
+ocp4_workload_bookbag_user_pvc_size: 2Gi
+
+# ---------------------------------------------------------
+# RHTR Pipelines Shared
+# ---------------------------------------------------------
+ocp4_workload_rhtr_pipelines_dev_project_name: petclinic-dev
+ocp4_workload_rhtr_pipelines_prod_project_name: petclinic-prod
+ocp4_workload_rhtr_pipelines_jenkins_project_name: jenkins
+
+ocp4_workload_rhtr_pipelines_gitea_user: gitea_user
+ocp4_workload_rhtr_pipelines_gitea_password: gitea_password
+ocp4_workload_rhtr_pipelines_gitea_repo: "http://gitea.gitea.svc:3000/{{ ocp4_workload_rhtr_pipelines_gitea_user }}/petclinic"
+
+# ---------------------------------------------------------
+# RHTR Pipelines User
+# ---------------------------------------------------------
+ocp4_workload_rhtr_pipelines_user_create_quota: true
+ocp4_workload_rhtr_pipelines_user_quota:
+  hard:
+    requests.cpu: "10"
+    limits.cpu: "20"
+    requests.memory: 6Gi
+    limits.memory: 20Gi
+    pods: "20"
+    configmaps: "50"
+    secrets: "150"
+    services: "150"
+    persistentvolumeclaims: "5"
+    requests.storage: 20Gi
+ocp4_workload_rhtr_pipelines_user_permissions:
+- project: petclinic-dev
+  role: view
+- project: petclinic-prod
+  role: view
+- project: jenkins
+  role: view
+ocp4_workload_rhtr_pipelines_user_projects:
+- "petclinic-{{ guid }}-dev"
+- "petclinic-{{ guid }}-prod"
+- "pipeline-{{ guid }}"
+ocp4_workload_rhtr_pipelines_gitea_admin_user: gitea_admin
+ocp4_workload_rhtr_pipelines_gitea_admin_password: gitea_admin_password
+# Gitea User to be created
+ocp4_workload_rhtr_pipelines_gitea_user: "{{ocp_username }}"
+ocp4_workload_rhtr_pipelines_gitea_user_password: gitea_password

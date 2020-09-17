@@ -1,0 +1,37 @@
+#!/bin/bash
+GUID=wkrhtr
+
+BASE_DOMAIN="example.opentlc.com"
+
+OCP_USERNAME="system:admin"
+
+WORKLOAD="ocp4_workload_bookbag_setup
+
+ACTION=create
+#ACTION=remove
+
+#VERBOSITY=-vvvv
+
+#CLOUD_PROVIDER=osp
+#ANSIBLE_USER=cloud-user
+CLOUD_PROVIDER=ec2
+ANSIBLE_USER=ec2-user
+
+ANSIBLE_USER_KEY_FILE="/Users/wkulhane/.ssh/bastion.pem"
+
+# Deploy the Workload
+ansible-playbook ${VERBOSITY} -i "bastion.${GUID}.${BASE_DOMAIN}", ./ansible/configs/ocp-workloads/ocp-workload.yml \
+    -e"ansible_ssh_private_key_file=${ANSIBLE_USER_KEY_FILE}" \
+    -e"ansible_user=${ANSIBLE_USER}" \
+    -e"ocp_username=${OCP_USERNAME}" \
+    -e"ocp_workload=${WORKLOAD}" \
+    -e"subdomain_base=${BASE_DOMAIN}" \
+    -e"subdomain_base_suffix=${BASE_DOMAIN}" \
+    -e"silent=False" \
+    -e"guid=${GUID}" \
+    -e"ACTION=${ACTION}" \
+    -e"become_override=True" \
+    -e"output_dir=/tmp" \
+    -e"cloud_provider=${CLOUD_PROVIDER}" \
+    -e"target_host=bastion.${GUID}.${BASE_DOMAIN}" \
+    -e @./wk4_workloads.yaml
